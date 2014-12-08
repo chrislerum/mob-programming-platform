@@ -17,7 +17,7 @@ describe "Mob programming platform" do
   it "creates a named session" do
     platform = MobProgrammingPlatform.new
 
-    platform.create_session("my new session")
+    platform.create_session "my new session"
 
     expect(platform.available_sessions.size).to eq(1)
     expect(platform.available_sessions).to include("my new session")
