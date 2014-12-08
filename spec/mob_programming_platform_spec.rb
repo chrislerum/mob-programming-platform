@@ -24,29 +24,37 @@ describe "Mob Programming Platform (MPP)" do
     end
 
     context "PM does not provide a session name" do
+      def create_session_without_name
+        mpp.create_session nil
+      end
+
       it "MPP indicates that the PM must provide a session name" do
-        expect { mpp.create_session nil }.
+        expect { create_session_without_name }.
           to raise_error(/You must provide a session name/)
       end
 
       it "MPP does not create a new session" do
-        mpp.create_session nil rescue nil
+        create_session_without_name rescue nil
 
         expect(mpp.available_sessions).to be_empty
       end
     end
 
     context "PM provides the name of an existing session" do
-      it "MPP indicates that the PM must provide a different name" do
+      def create_session
         mpp.create_session session_name
+      end
 
-        expect { mpp.create_session session_name }.
+      it "MPP indicates that the PM must provide a different name" do
+        create_session
+
+        expect { create_session }.
           to raise_error(/You must provide a different session name/)
       end
 
       it "MPP does not create a new session" do
-        mpp.create_session session_name
-        mpp.create_session session_name rescue nil
+        create_session
+        create_session rescue nil
 
         expect(mpp.available_sessions).
           to eq([session_name])
