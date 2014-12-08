@@ -15,6 +15,7 @@ class MobProgrammingPlatform
     validate_session_name session_name
     validate_session_is_current session_name
     validate_mobster_name mobster_name
+    validate_session_does_not_include_mobster(session_name, mobster_name)
 
     active_mobsters(session_name) << mobster_name
     true
@@ -41,6 +42,12 @@ class MobProgrammingPlatform
   def validate_session_is_current(session_name)
     unless session?(session_name)
       raise "You must provide the name of a current session"
+    end
+  end
+
+  def validate_session_does_not_include_mobster(session_name, mobster_name)
+    if active_mobsters(session_name).include?(mobster_name)
+      raise "You may not join the same session twice"
     end
   end
 

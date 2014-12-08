@@ -130,5 +130,31 @@ describe "Mob Programming Platform (MPP)" do
         expect(mpp.active_mobsters(session_name)).to be_empty
       end
     end
+
+    context "PM joins a session in which they're already participating" do
+      let(:session_name) { "session name" }
+      let(:pm_name) { "PM name" }
+
+      before { mpp.create_session session_name }
+
+      def join_session
+        mpp.join_session session_name, pm_name
+      end
+
+      it "MPP indicates that PM may not join the same session twice" do
+        join_session
+
+        expect { join_session }.
+          to raise_error(/You may not join the same session twice/)
+      end
+
+      it "MPP does not modify the list of active mobsters" do
+        join_session
+        join_session rescue nil
+
+        expect(mpp.active_mobsters(session_name)).
+          to eq([pm_name])
+      end
+    end
   end
 end
