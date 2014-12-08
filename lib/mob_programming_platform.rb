@@ -13,6 +13,7 @@ class MobProgrammingPlatform
 
   def join_session(session_name, mobster_name)
     validate_session_name session_name
+    validate_session_is_current session_name
     validate_mobster_name mobster_name
 
     active_mobsters(session_name) << mobster_name
@@ -35,6 +36,12 @@ class MobProgrammingPlatform
 
   def validate_session_name_is_available(session_name)
     raise "You must provide a different session name" if session?(session_name)
+  end
+
+  def validate_session_is_current(session_name)
+    unless session?(session_name)
+      raise "You must provide the name of a current session"
+    end
   end
 
   def session?(session_name)

@@ -110,5 +110,21 @@ describe "Mob Programming Platform (MPP)" do
         expect(mpp.active_mobsters(session_name)).to be_empty
       end
     end
+
+    context "PM provides the name of a session that does not exist" do
+      let(:session_name) { "session name" }
+      let(:pm_name) { "PM name" }
+
+      it "MPP indicates that PM must provide the name of a current session" do
+        expect { mpp.join_session session_name, pm_name }.
+          to raise_error(/You must provide the name of a current session/)
+      end
+
+      it "MPP does not add PM to the list of active mobsters" do
+        mpp.join_session session_name, pm_name rescue nil
+
+        expect(mpp.active_mobsters(session_name)).to be_empty
+      end
+    end
   end
 end
