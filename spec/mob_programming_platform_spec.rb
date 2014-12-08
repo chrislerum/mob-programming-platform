@@ -5,6 +5,7 @@ class MobProgrammingPlatform
 
   def create_session(session_name)
     available_sessions << session_name
+    true
   end
 end
 
@@ -20,5 +21,13 @@ describe "Mob programming platform" do
 
     expect(platform.available_sessions.size).to eq(1)
     expect(platform.available_sessions).to include("my new session")
+  end
+
+  it "reports success" do
+    platform = MobProgrammingPlatform.new
+
+    response = platform.create_session "successful new session"
+
+    expect(response).to eq(true)
   end
 end
