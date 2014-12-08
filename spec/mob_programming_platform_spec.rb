@@ -90,18 +90,24 @@ describe "Mob Programming Platform (MPP)" do
     end
 
     context "PM does not provide their name" do
-      it "MPP indicates that PM must provide their name" do
-        mpp.create_session "session name"
+      let(:session_name) { "session name" }
 
-        expect { mpp.join_session "session name", nil }.
+      def join_session_with_session_name_without_pm_name
+        mpp.join_session session_name, nil
+      end
+
+      it "MPP indicates that PM must provide their name" do
+        mpp.create_session session_name
+
+        expect { join_session_with_session_name_without_pm_name }.
           to raise_error(/You must provide your name/)
       end
 
       it "MPP does not add PM to the list of active mobsters" do
-        mpp.create_session "session name"
-        mpp.join_session "session name", nil rescue nil
+        mpp.create_session session_name
+        join_session_with_session_name_without_pm_name rescue nil
 
-        expect(mpp.active_mobsters("session name")).to be_empty
+        expect(mpp.active_mobsters(session_name)).to be_empty
       end
     end
   end
