@@ -43,14 +43,11 @@ describe "Mob Programming Platform (MPP)" do
       end
 
       it "MPP does not create a new session" do
-        first_session_name = "my session name"
-
-        mpp.create_session first_session_name
+        mpp.create_session "my session name"
         mpp.create_session "my session name" rescue nil
 
-        expect(mpp.available_sessions.size).to eq(1)
-        expect(mpp.available_sessions.first.object_id).
-          to eq(first_session_name.object_id)
+        expect(mpp.available_sessions).
+          to eq(["my session name"])
       end
     end
   end
