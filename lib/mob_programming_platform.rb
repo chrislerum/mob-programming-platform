@@ -29,8 +29,10 @@ class MobProgrammingPlatform
   end
 
   def validate_session_name_is_available(session_name)
-    if available_sessions.include?(session_name)
-      raise "You must provide a different session name"
-    end
+    raise "You must provide a different session name" if session?(session_name)
+  end
+
+  def session?(session_name)
+    available_sessions.include?(session_name)
   end
 end
