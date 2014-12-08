@@ -4,9 +4,20 @@ class MobProgrammingPlatform
   end
 
   def create_session(session_name)
-    raise "You must provide a session name" unless session_name
+    validate_session_name session_name
+
     available_sessions << session_name
     true
+  end
+
+  private
+
+  def validate_session_name(session_name)
+    if session_name.nil?
+      raise "You must provide a session name"
+    elsif available_sessions.include?(session_name)
+      raise "You must provide a different session name"
+    end
   end
 end
 
@@ -46,6 +57,30 @@ describe "Mob programming platform" do
       platform.create_session nil rescue nil
 
       expect(platform.available_sessions).to be_empty
+    end
+  end
+
+  context "prospective mobster provides the name of an existing session" do
+    it "indicates that the prospective mobster must provide a different name" do
+      platform = MobProgrammingPlatform.new
+
+      platform.create_session "my session name"
+
+      expect { platform.create_session "my session name" }.
+        to raise_error(/You must provide a different session name/)
+    end
+
+    it "does not create a new session" do
+      platform = MobProgrammingPlatform.new
+
+      first_session_name = "my session name"
+
+      platform.create_session first_session_name
+      platform.create_session "my session name" rescue nil
+
+      expect(platform.available_sessions.size).to eq(1)
+      expect(platform.available_sessions.first.object_id).
+        to eq(first_session_name.object_id)
     end
   end
 end
