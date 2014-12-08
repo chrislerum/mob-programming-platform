@@ -154,4 +154,36 @@ describe "Mob Programming Platform (MPP)" do
       end
     end
   end
+
+  context "PM joins session while already participating in another session" do
+    let(:first_session_name) { "first session" }
+
+    before do
+      mpp.create_session first_session_name
+      mpp.join_session first_session_name, pm_name
+      mpp.create_session session_name
+    end
+
+    def join_second_session
+      mpp.join_session session_name, pm_name
+    end
+
+    it "MPP indicates that PM cannot join two sessions at the same time" do
+      expect { join_second_session }.
+        to raise_error(/You cannot join two sessions at the same time/)
+    end
+
+    it "MPP does not modify list of active mobsters for the first session" do
+      join_second_session rescue nil
+
+      expect(mpp.active_mobsters(first_session_name)).
+        to eq([pm_name])
+    end
+
+    it "MPP does not add PM to list of active mobsters for second session" do
+      join_second_session rescue nil
+
+      expect(mpp.active_mobsters(session_name)).to be_empty
+    end
+  end
 end

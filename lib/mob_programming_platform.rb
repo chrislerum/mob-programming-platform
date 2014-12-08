@@ -16,13 +16,15 @@ class MobProgrammingPlatform
     validate_session_is_current session_name
     validate_mobster_name mobster_name
     validate_session_does_not_include_mobster(session_name, mobster_name)
+    validate_mobster_is_not_currently_active mobster_name
 
     active_mobsters(session_name) << mobster_name
     true
   end
 
   def active_mobsters(session_name)
-    @active_mobsters ||= []
+    @active_mobsters ||= {}
+    @active_mobsters[session_name] ||= []
   end
 
   private
@@ -51,7 +53,17 @@ class MobProgrammingPlatform
     end
   end
 
+  def validate_mobster_is_not_currently_active(mobster_name)
+    if active_mobster?(mobster_name)
+      raise "You cannot join two sessions at the same time"
+    end
+  end
+
   def session?(session_name)
     available_sessions.include?(session_name)
+  end
+
+  def active_mobster?(mobster_name)
+    available_sessions.any? {|s| active_mobsters(s).include?(mobster_name) }
   end
 end
