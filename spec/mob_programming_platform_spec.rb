@@ -64,4 +64,22 @@ describe "Mob Programming Platform (MPP)" do
       end
     end
   end
+
+  describe "a Prospective Mobster (PM) joins a session" do
+    it "MPP adds PM to the list of active mobsters" do
+      platform = MobProgrammingPlatform.new
+      platform.create_session "session name"
+
+      platform.join_session "session name", "PM name"
+
+      expect(platform.active_mobsters("session name")).to include("PM name")
+    end
+
+    it "MPP reports success" do
+      platform = MobProgrammingPlatform.new
+      platform.create_session "session name"
+
+      expect(platform.join_session("session name", "PM name")).to eq(true)
+    end
+  end
 end

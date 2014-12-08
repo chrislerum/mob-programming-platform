@@ -10,6 +10,15 @@ class MobProgrammingPlatform
     true
   end
 
+  def join_session(session_name, mobster_name)
+    @mobster_name = mobster_name
+    true
+  end
+
+  def active_mobsters(session_name)
+    @mobster_name
+  end
+
   private
 
   def validate_session_name(session_name)
