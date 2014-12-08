@@ -1,14 +1,14 @@
 require 'mob_programming_platform'
 
 describe "Mob Programming Platform (MPP)" do
+  let(:platform) { MobProgrammingPlatform.new }
+
   it "a prospective mobster (PM) lists available sessions" do
-    expect(MobProgrammingPlatform.new.available_sessions).to be_empty
+    expect(platform.available_sessions).to be_empty
   end
 
   describe "a prospective mobster (PM) creates a new session" do
     it "MPP adds a new named session to the available sessions list" do
-      platform = MobProgrammingPlatform.new
-
       platform.create_session "my new session"
 
       expect(platform.available_sessions.size).to eq(1)
@@ -16,8 +16,6 @@ describe "Mob Programming Platform (MPP)" do
     end
 
     it "MPP reports success" do
-      platform = MobProgrammingPlatform.new
-
       response = platform.create_session "successful new session"
 
       expect(response).to eq(true)
@@ -25,15 +23,11 @@ describe "Mob Programming Platform (MPP)" do
 
     context "PM does not provide a session name" do
       it "MPP indicates that the PM must provide a session name" do
-        platform = MobProgrammingPlatform.new
-
         expect { platform.create_session nil }.
           to raise_error(/You must provide a session name/)
       end
 
       it "MPP does not create a new session" do
-        platform = MobProgrammingPlatform.new
-
         platform.create_session nil rescue nil
 
         expect(platform.available_sessions).to be_empty
@@ -42,8 +36,6 @@ describe "Mob Programming Platform (MPP)" do
 
     context "PM provides the name of an existing session" do
       it "MPP indicates that the PM must provide a different name" do
-        platform = MobProgrammingPlatform.new
-
         platform.create_session "my session name"
 
         expect { platform.create_session "my session name" }.
@@ -51,8 +43,6 @@ describe "Mob Programming Platform (MPP)" do
       end
 
       it "MPP does not create a new session" do
-        platform = MobProgrammingPlatform.new
-
         first_session_name = "my session name"
 
         platform.create_session first_session_name
@@ -67,7 +57,6 @@ describe "Mob Programming Platform (MPP)" do
 
   describe "a Prospective Mobster (PM) joins a session" do
     it "MPP adds PM to the list of active mobsters" do
-      platform = MobProgrammingPlatform.new
       platform.create_session "session name"
 
       platform.join_session "session name", "PM name"
@@ -76,7 +65,6 @@ describe "Mob Programming Platform (MPP)" do
     end
 
     it "MPP reports success" do
-      platform = MobProgrammingPlatform.new
       platform.create_session "session name"
 
       expect(platform.join_session("session name", "PM name")).to eq(true)
