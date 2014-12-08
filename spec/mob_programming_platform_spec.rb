@@ -4,6 +4,7 @@ class MobProgrammingPlatform
   end
 
   def create_session(session_name)
+    raise "You must provide a session name" if session_name.empty?
     available_sessions << session_name
     true
   end
@@ -29,5 +30,22 @@ describe "Mob programming platform" do
     response = platform.create_session "successful new session"
 
     expect(response).to eq(true)
+  end
+
+  context "prospective mobster does not provide a session name" do
+    it "indicates that the prospective mobster must provide a session name" do
+      platform = MobProgrammingPlatform.new
+
+      expect { platform.create_session '' }.
+        to raise_error(/You must provide a session name/)
+    end
+
+    it "does not create a new session" do
+      platform = MobProgrammingPlatform.new
+
+      platform.create_session '' rescue nil
+
+      expect(platform.available_sessions).to be_empty
+    end
   end
 end
