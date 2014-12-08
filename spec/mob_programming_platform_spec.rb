@@ -3,20 +3,22 @@ require 'mob_programming_platform'
 describe "Mob Programming Platform (MPP)" do
   let(:mpp) { MobProgrammingPlatform.new }
 
+  let(:pm_name) { "PM name" }
+  let(:session_name) { "session name" }
+
   it "a prospective mobster (PM) lists available sessions" do
     expect(mpp.available_sessions).to be_empty
   end
 
   describe "a prospective mobster (PM) creates a new session" do
     it "MPP adds a new named session to the available sessions list" do
-      mpp.create_session "my new session"
+      mpp.create_session session_name
 
-      expect(mpp.available_sessions.size).to eq(1)
-      expect(mpp.available_sessions).to include("my new session")
+      expect(mpp.available_sessions).to eq([session_name])
     end
 
     it "MPP reports success" do
-      response = mpp.create_session "successful new session"
+      response = mpp.create_session session_name
 
       expect(response).to eq(true)
     end
@@ -36,40 +38,38 @@ describe "Mob Programming Platform (MPP)" do
 
     context "PM provides the name of an existing session" do
       it "MPP indicates that the PM must provide a different name" do
-        mpp.create_session "my session name"
+        mpp.create_session session_name
 
-        expect { mpp.create_session "my session name" }.
+        expect { mpp.create_session session_name }.
           to raise_error(/You must provide a different session name/)
       end
 
       it "MPP does not create a new session" do
-        mpp.create_session "my session name"
-        mpp.create_session "my session name" rescue nil
+        mpp.create_session session_name
+        mpp.create_session session_name rescue nil
 
         expect(mpp.available_sessions).
-          to eq(["my session name"])
+          to eq([session_name])
       end
     end
   end
 
   describe "a Prospective Mobster (PM) joins a session" do
     it "MPP adds PM to the list of active mobsters" do
-      mpp.create_session "session name"
+      mpp.create_session session_name
 
-      mpp.join_session "session name", "PM name"
+      mpp.join_session session_name, pm_name
 
-      expect(mpp.active_mobsters("session name")).to include("PM name")
+      expect(mpp.active_mobsters(session_name)).to include(pm_name)
     end
 
     it "MPP reports success" do
-      mpp.create_session "session name"
+      mpp.create_session session_name
 
-      expect(mpp.join_session("session name", "PM name")).to eq(true)
+      expect(mpp.join_session(session_name, pm_name)).to eq(true)
     end
 
     context "PM does not provide the name of a session to join" do
-      let(:pm_name) { "PM name" }
-
       def join_session_with_pm_name_without_session_name
         mpp.join_session nil, pm_name
       end
@@ -87,8 +87,6 @@ describe "Mob Programming Platform (MPP)" do
     end
 
     context "PM does not provide their name" do
-      let(:session_name) { "session name" }
-
       def join_session_with_session_name_without_pm_name
         mpp.join_session session_name, nil
       end
@@ -109,9 +107,6 @@ describe "Mob Programming Platform (MPP)" do
     end
 
     context "PM provides the name of a session that does not exist" do
-      let(:session_name) { "session name" }
-      let(:pm_name) { "PM name" }
-
       def join_nonexistent_session
         mpp.join_session session_name, pm_name
       end
@@ -129,9 +124,6 @@ describe "Mob Programming Platform (MPP)" do
     end
 
     context "PM joins a session in which they're already participating" do
-      let(:session_name) { "session name" }
-      let(:pm_name) { "PM name" }
-
       before { mpp.create_session session_name }
 
       def join_session
