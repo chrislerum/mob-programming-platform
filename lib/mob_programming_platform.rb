@@ -13,16 +13,21 @@ class MobProgrammingPlatform
 
   def join_session(session_name, mobster_name)
     validate_session_name session_name
+    validate_mobster_name mobster_name
 
-    @mobster_name = mobster_name
+    active_mobsters(session_name) << mobster_name
     true
   end
 
   def active_mobsters(session_name)
-    @mobster_name || []
+    @active_mobsters ||= []
   end
 
   private
+
+  def validate_mobster_name(mobster_name)
+    raise "You must provide your name" unless mobster_name
+  end
 
   def validate_session_name(session_name)
     raise "You must provide a session name" unless session_name
