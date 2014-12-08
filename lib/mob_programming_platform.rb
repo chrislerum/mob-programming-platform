@@ -5,13 +5,14 @@ class MobProgrammingPlatform
 
   def create_session(session_name)
     validate_session_name session_name
+    validate_session_name_is_available session_name
 
     available_sessions << session_name
     true
   end
 
   def join_session(session_name, mobster_name)
-    raise "You must provide a session name" unless session_name
+    validate_session_name session_name
 
     @mobster_name = mobster_name
     true
@@ -24,9 +25,11 @@ class MobProgrammingPlatform
   private
 
   def validate_session_name(session_name)
-    if session_name.nil?
-      raise "You must provide a session name"
-    elsif available_sessions.include?(session_name)
+    raise "You must provide a session name" unless session_name
+  end
+
+  def validate_session_name_is_available(session_name)
+    if available_sessions.include?(session_name)
       raise "You must provide a different session name"
     end
   end
