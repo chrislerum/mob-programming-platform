@@ -6,6 +6,22 @@ describe "Mob Programming Platform (MPP)" do
   let(:pm_name) { "PM name" }
   let(:session_name) { "session name" }
 
+  describe "RubySteps prospect creates an account" do
+    it "MPP sends a confirmation email to the prospect's email address"
+
+    it "MPP indicates that a confirmation email was sent" do
+      expect(mpp.system_messages).to be_empty
+
+      mpp.register name: 'RubySteps prospect', username: 'prospect', email: 'prospect@example.com'
+
+      expect(mpp.system_messages).to include("RubySteps prospect, check your email for a confirmation link")
+    end
+
+#    RubySteps prospect provides registration information
+#    Mob Programming Platform validates email and username availability
+#    Mob Programming Platform sends RubySteps prospect a confirmation email and indicates that it was sent
+  end
+
   it "a prospective mobster (PM) lists available sessions" do
     expect(mpp.available_sessions).to be_empty
   end

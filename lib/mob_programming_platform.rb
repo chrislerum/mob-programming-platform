@@ -1,6 +1,18 @@
 class MobProgrammingPlatform
+  def initialize
+    @system_messages = []
+  end
+
   def available_sessions
     @available_sessions ||= []
+  end
+
+  def register(name:, email:, username:)
+    @system_messages << "#{name}, check your email for a confirmation link"
+  end
+
+  def system_messages
+    @system_messages
   end
 
   def create_session(session_name)
