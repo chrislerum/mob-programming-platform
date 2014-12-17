@@ -1,40 +1,18 @@
 require 'mob_programming_platform'
 
-class InMemoryMailingService
-  def emails_sent
-    @emails_sent ||= []
-  end
-
-  def deliver_email(email, subject)
-    emails_sent << "#{subject}, #{email}"
-  end
-end
-
 describe "Mob Programming Platform (MPP)" do
-  let(:mpp) { MobProgrammingPlatform.new(mailing_service) }
-  let(:mailing_service) { double('mailing service') }
+  let(:mpp) { MobProgrammingPlatform.new }
 
   let(:pm_name) { "PM name" }
   let(:session_name) { "session name" }
 
   describe "RubySteps prospect creates an account" do
-    before { allow(mailing_service).to receive(:deliver_email) }
-
     it "MPP sends a confirmation email to the prospect's email address" do
-      expect(mailing_service).to receive(:deliver_email).with("prospect@example.com", "Welcome to MPP")
-
-      mpp.register name: 'RubySteps prospect', username: 'prospect', email: 'prospect@example.com'
-    end
-
-    it "MPP sends a confirmation email to the prospect's email address (state-based)" do
-      in_memory_mailing_service = InMemoryMailingService.new
-      expect(in_memory_mailing_service.emails_sent).to be_empty
-
-      mpp = MobProgrammingPlatform.new in_memory_mailing_service
+      expect(mpp.emails_sent).to be_empty
 
       mpp.register name: 'RubySteps prospect', username: 'prospect', email: 'prospect@example.com'
 
-      expect(in_memory_mailing_service.emails_sent).to include("Welcome to MPP, prospect@example.com")
+      expect(mpp.emails_sent).to include("Welcome to MPP, prospect@example.com")
     end
 
     it "MPP indicates that a confirmation email was sent" do

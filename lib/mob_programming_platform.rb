@@ -1,8 +1,4 @@
 class MobProgrammingPlatform
-  def initialize(mailing_service)
-    @mailing_service = mailing_service
-  end
-
   def available_sessions
     @available_sessions ||= []
   end
@@ -12,9 +8,17 @@ class MobProgrammingPlatform
   end
 
   def register(name:, email:, username:)
-    @mailing_service.deliver_email email, "Welcome to MPP"
+    deliver_email email, "Welcome to MPP"
 
     system_messages << "#{name}, check your email for a confirmation link"
+  end
+
+  def emails_sent
+    @emails_sent ||= []
+  end
+
+  def deliver_email(email, subject)
+    emails_sent << "#{subject}, #{email}"
   end
 
   def create_session(session_name)
