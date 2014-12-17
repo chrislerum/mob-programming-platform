@@ -17,6 +17,12 @@ describe "Mob Programming Platform (MPP)" do
       expect(mpp.system_messages).to include("RubySteps prospect, check your email for a confirmation link")
     end
 
+    it "MPP handles arbitrary names in the confirmation email" do
+      mpp.register name: 'another RubySteps prospect', username: 'prospect', email: 'prospect@example.com'
+
+      expect(mpp.system_messages).to include("another RubySteps prospect, check your email for a confirmation link")
+    end
+
 #    RubySteps prospect provides registration information
 #    Mob Programming Platform validates email and username availability
 #    Mob Programming Platform sends RubySteps prospect a confirmation email and indicates that it was sent

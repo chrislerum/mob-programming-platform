@@ -8,7 +8,7 @@ class MobProgrammingPlatform
   end
 
   def register(name:, email:, username:)
-    system_messages << "RubySteps prospect, check your email for a confirmation link"
+    system_messages << "#{name}, check your email for a confirmation link"
   end
 
   def create_session(session_name)
