@@ -8,6 +8,8 @@ class MobProgrammingPlatform
   end
 
   def register(name:, email:, username:)
+    MailingService.deliver_email email, "Welcome to MPP"
+
     system_messages << "#{name}, check your email for a confirmation link"
   end
 
