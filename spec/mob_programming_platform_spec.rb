@@ -1,20 +1,17 @@
 require 'mob_programming_platform'
 
-class MailingService
-  def self.deliver_email(email_address, subject)
-
-  end
-end
-
 describe "Mob Programming Platform (MPP)" do
-  let(:mpp) { MobProgrammingPlatform.new }
+  let(:mpp) { MobProgrammingPlatform.new(mailing_service) }
+  let(:mailing_service) { double('mailing service') }
 
   let(:pm_name) { "PM name" }
   let(:session_name) { "session name" }
 
   describe "RubySteps prospect creates an account" do
+    before { allow(mailing_service).to receive(:deliver_email) }
+
     it "MPP sends a confirmation email to the prospect's email address" do
-      expect(MailingService).to receive(:deliver_email).with("prospect@example.com", "Welcome to MPP")
+      expect(mailing_service).to receive(:deliver_email).with("prospect@example.com", "Welcome to MPP")
 
       mpp.register name: 'RubySteps prospect', username: 'prospect', email: 'prospect@example.com'
     end
