@@ -1,18 +1,14 @@
 class MobProgrammingPlatform
-  def initialize
-    @system_messages = []
-  end
-
   def available_sessions
     @available_sessions ||= []
   end
 
-  def register(name:, email:, username:)
-    @system_messages << "#{name}, check your email for a confirmation link"
+  def system_messages
+    @system_messages ||= []
   end
 
-  def system_messages
-    @system_messages
+  def register(name:, email:, username:)
+    system_messages << "RubySteps prospect, check your email for a confirmation link"
   end
 
   def create_session(session_name)
