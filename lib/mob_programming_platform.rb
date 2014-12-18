@@ -18,7 +18,10 @@ class MobProgrammingPlatform
   end
 
   def deliver_email(email, subject)
-    emails_sent << "#{subject}, #{email}"
+    emails_sent << {
+      subject: "#{subject}, #{email}",
+      body: "Please confirm your email address with: CONFIRM"
+    }
   end
 
   def create_session(session_name)

@@ -12,7 +12,9 @@ describe "Mob Programming Platform (MPP)" do
 
       mpp.register name: 'RubySteps prospect', username: 'prospect', email: 'prospect@example.com'
 
-      expect(mpp.emails_sent).to include("Welcome to MPP, prospect@example.com")
+      expect(mpp.emails_sent.size).to eq(1)
+      expect(mpp.emails_sent.first[:subject]).to eq("Welcome to MPP, prospect@example.com")
+      expect(mpp.emails_sent.first[:body]).to include("Please confirm your email address with: CONFIRM")
     end
 
     it "MPP indicates that a confirmation email was sent" do
