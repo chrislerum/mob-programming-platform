@@ -8,14 +8,20 @@ describe "Mob Programming Platform (MPP)" do
 
   describe "RubySteps prospect creates an account" do
     describe "MPP sends a confirmation email to the prospect's email address" do
-      it "MPP sends a confirmation email to the prospect's email address" do
+      it "has a friendly subject" do
         expect(mpp.emails_sent).to be_empty
 
         mpp.register name: 'RubySteps prospect', username: 'prospect', email: 'prospect@example.com'
 
         expect(mpp.emails_sent.size).to eq(1)
         expect(mpp.emails_sent.first[:subject]).to eq("Welcome to MPP, prospect@example.com")
-        expect(mpp.emails_sent.first[:body]).to include("Please confirm your email address with: CONFIRM")
+      end
+
+      it "includes a confirmation code in the email body" do
+        mpp.register name: 'RubySteps prospect', username: 'prospect', email: 'prospect@example.com'
+
+        expect(mpp.emails_sent.first[:body]).
+          to include("Please confirm your email address with: CONFIRM")
       end
 
       it "MPP indicates that a confirmation email was sent" do
@@ -23,13 +29,15 @@ describe "Mob Programming Platform (MPP)" do
 
         mpp.register name: 'RubySteps prospect', username: 'prospect', email: 'prospect@example.com'
 
-        expect(mpp.system_messages).to include("RubySteps prospect, check your email for a confirmation link")
+        expect(mpp.system_messages).
+          to include("RubySteps prospect, check your email for a confirmation link")
       end
 
       it "MPP handles arbitrary names in the confirmation email" do
         mpp.register name: 'another RubySteps prospect', username: 'prospect', email: 'prospect@example.com'
 
-        expect(mpp.system_messages).to include("another RubySteps prospect, check your email for a confirmation link")
+        expect(mpp.system_messages).
+          to include("another RubySteps prospect, check your email for a confirmation link")
       end
     end
   end
