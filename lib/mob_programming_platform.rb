@@ -8,6 +8,11 @@ class MobProgrammingPlatform
   end
 
   def register(name:, email:, username:)
+    unless email && name && username
+      system_messages << "Registration failed: please provide complete information"
+      return
+    end
+
     @registered_name = name
     deliver_email email, "Welcome to MPP"
 

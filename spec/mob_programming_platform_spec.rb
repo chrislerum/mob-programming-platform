@@ -40,6 +40,53 @@ describe "Mob Programming Platform (MPP)" do
           to include("another RubySteps prospect, check your email for a confirmation link")
       end
     end
+
+    describe "PM provides incomplete registration information" do
+      context "missing email" do
+        it "MPP reports failure, indicating that the PM must provide complete registration information" do
+          mpp.register email: nil, name: 'Prospect', username: 'prospect'
+
+          expect(mpp.system_messages).
+            to eq(["Registration failed: please provide complete information"])
+        end
+
+        it "MPP does not send a confirmation email" do
+          mpp.register email: nil, name: 'Prospect', username: 'prospect'
+
+          expect(mpp.emails_sent).to be_empty
+        end
+      end
+
+      context "missing name" do
+        it "MPP reports failure, indicating that the PM must provide complete registration information" do
+          mpp.register name: nil, email: 'prospect@example.com', username: 'prospect'
+
+          expect(mpp.system_messages).
+            to eq(["Registration failed: please provide complete information"])
+        end
+
+        it "MPP does not send a confirmation email" do
+          mpp.register name: nil, email: 'prospect@example.com', username: 'prospect'
+
+          expect(mpp.emails_sent).to be_empty
+        end
+      end
+
+      context "missing username" do
+        it "MPP reports failure, indicating that the PM must provide complete registration information" do
+          mpp.register username: nil, email: 'prospect@example.com', name: 'Prospect'
+
+          expect(mpp.system_messages).
+            to eq(["Registration failed: please provide complete information"])
+        end
+
+        it "MPP does not send a confirmation email" do
+          mpp.register username: nil, email: 'prospect@example.com', name: 'Prospect'
+
+          expect(mpp.emails_sent).to be_empty
+        end
+      end
+    end
   end
 
   describe "a Prospective Mobster (PM) confirms their email address" do
