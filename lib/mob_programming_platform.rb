@@ -8,13 +8,14 @@ class MobProgrammingPlatform
   end
 
   def register(name:, email:, username:)
+    @registered_name = name
     deliver_email email, "Welcome to MPP"
 
     system_messages << "#{name}, check your email for a confirmation link"
   end
 
   def confirm_email(confirmation_code)
-    system_messages << "RubySteps Prospect, your email address is confirmed and you may now log in"
+    system_messages << "#{@registered_name}, your email address is confirmed and you may now log in"
   end
 
   def emails_sent

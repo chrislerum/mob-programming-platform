@@ -52,7 +52,7 @@ describe "Mob Programming Platform (MPP)" do
         to include("RubySteps Prospect, your email address is confirmed and you may now log in")
     end
 
-    xit "MPP accepts arbitrary names and email addresses" do
+    it "MPP accepts arbitrary names and email addresses" do
       mpp.register name: "New Prospect", email: "prospect@example.com", username: "prospect"
 
       mpp.confirm_email "CONFIRM"
