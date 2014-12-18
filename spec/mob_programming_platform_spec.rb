@@ -42,6 +42,26 @@ describe "Mob Programming Platform (MPP)" do
     end
   end
 
+  describe "a Prospective Mobster (PM) confirms their email address" do
+    it "MPP presents new member with a successful registration message" do
+      mpp.register name: "RubySteps Prospect", email: "prospect@example.com", username: "prospect"
+
+      mpp.confirm_email "CONFIRM"
+
+      expect(mpp.system_messages).
+        to include("RubySteps Prospect, your email address is confirmed and you may now log in")
+    end
+
+    xit "MPP accepts arbitrary names and email addresses" do
+      mpp.register name: "New Prospect", email: "prospect@example.com", username: "prospect"
+
+      mpp.confirm_email "CONFIRM"
+
+      expect(mpp.system_messages).
+        to include("New Prospect, your email address is confirmed and you may now log in")
+    end
+  end
+
   it "a prospective mobster (PM) lists available sessions" do
     expect(mpp.available_sessions).to be_empty
   end

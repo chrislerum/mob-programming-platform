@@ -13,6 +13,10 @@ class MobProgrammingPlatform
     system_messages << "#{name}, check your email for a confirmation link"
   end
 
+  def confirm_email(confirmation_code)
+    system_messages << "RubySteps Prospect, your email address is confirmed and you may now log in"
+  end
+
   def emails_sent
     @emails_sent ||= []
   end
